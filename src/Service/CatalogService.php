@@ -64,6 +64,10 @@ final class CatalogService
         }
 
         $headers = fgetcsv($handle, 0, ';');
+        if ($headers !== false && isset($headers[0])) {
+            $headers[0] = preg_replace('/^\xEF\xBB\xBF/', '', (string) $headers[0]) ?? $headers[0];
+        }
+
         $requirements = [];
 
         while (($values = fgetcsv($handle, 0, ';')) !== false) {
